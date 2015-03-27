@@ -4,4 +4,4 @@ var storyPoints = {
   }
 };
 
-storyPoins.calculate();
+storyPoints.calculate();
