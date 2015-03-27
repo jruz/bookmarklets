@@ -1,5 +1,5 @@
 var storyPoints = {
-  calculate: function() {
+  run: function() {
     var text, result = [];
     $('.tb-stream-as-block').each(function(i, list){
       var name    = $(list).find('.js-task-list-title').text();
@@ -13,5 +13,3 @@ var storyPoints = {
     alert(text);
   }
 };
-
-storyPoints.calculate();
