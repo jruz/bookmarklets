@@ -6,9 +6,11 @@ $( document ).ready(function() {
       var container = document.getElementById('container'),
           btn = document.createElement("a"),
           script;
-      script = this.getScript();
-      script.replace('REPLACE_VARNAME', var_name).replace('REPLACE_FILENAME', file_name);
-      script = encodeURI(script);
+      this.getScript().done(function(resonse){
+        console.log(response);
+      });
+      //script.replace('REPLACE_VARNAME', var_name).replace('REPLACE_FILENAME', file_name);
+      //script = encodeURI(script);
 
       btn.createTextNode(button_text);
       btn.setAttribute('href', 'javascript:' + script);
@@ -18,11 +20,9 @@ $( document ).ready(function() {
     },
 
     getScript: function(){
-      var script;
-      $.load('/bookmarklet.js', function(res){
-        script = res;
+      return $.get('/bookmarklet.js', function(res){
+        return res;
       });
-      return script;
     },
 
     init: function(){
