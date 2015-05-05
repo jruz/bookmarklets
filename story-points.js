@@ -4,7 +4,7 @@ var storyPoints = {
     $('.js-toggle-archived').click();
   },
   get_points: function(list) {
-    var tags = $(list).find('a[style="color: rgb(0, 0, 0); background-color: rgb(74, 204, 230);"]');
+    var tags = $(list).find('a[style="color: rgb(0, 0, 0); background-color: rgb(208, 240, 237);"]');
     return _.reduce(tags, function(total, node){ return total + parseInt(node.text); }, 0);
   },
   get_tag_points: function(list){
