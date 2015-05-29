@@ -4,13 +4,24 @@ var storyPoints = {
     $('.js-toggle-archived').click();
   },
   get_points: function (list) {
-    var tag_style = 'background:#D0F0ED;color:#000000;'
-      , tags = $(list).find('a[style="' + tag_style + '"]');
-    return _.reduce(tags, function (total, node) { return total + parseInt(node.text); }, 0);
+    var tags = $(list).find('a.tag-pr');
+    return _.reduce(tags, function (total, node) {
+      var content = node.innerText
+      , as_number = parseInt(content);
+      if (/\./.test(content) || isNaN(as_number)) {
+        return total;
+      } else {
+        return total + as_number;
+      }
+    }, 0);
   },
   get_tag_points: function (list) {
     var self = this
-      , tag_names = _.uniq($(list).find('a.tag').map(function () { if (isNaN(this.innerText)) { return this.innerText; } }));
+      , tag_names = _.uniq($(list).find('a.tag').map(function () {
+        if (!_.isNumber(this.innerText)) {
+          return this.innerText;
+        }
+      }));
     return tag_names.map(function (tag) {
       var nodes = $(list).find('a.tag:contains(' + tag + ')')
         , points = _.reduce(nodes, function (prev, item) { return prev + self.get_points($(item).parent()); }, 0);
@@ -24,7 +35,7 @@ var storyPoints = {
       var name = $(list).find('.js-task-list-title').text()
         ,  points = self.get_points(list)
         ,  tag_points = self.get_tag_points(list);
-      console.log(tag_points);
+      //console.log(tag_points);
       return result.push({name: name, points: points});
     });
     result.pop();
