@@ -61,11 +61,10 @@ var storyPoints = {
   init: function () {
     var result = []
       , self = this
-      , current_sprint_table
-      , current_sprint = []
-      , past_sprints
-      , past_sprints_table
-      , content;
+      , current_sprint
+      , done
+      , other
+      , content = [];
 
     $('.tb-stream-as-block').each(function (i, list) {
       var name = $(list).find('.js-task-list-title').text()
@@ -86,7 +85,7 @@ var storyPoints = {
       return arr;
     }
 
-    function getPastSprints(data) {
+    function getDone(data) {
       var regex = /^Done|^Release/;
       return data.filter(function (item) {
         if (regex.test(item.name)) {
@@ -95,14 +94,25 @@ var storyPoints = {
       });
     }
 
+    function getOther(data) {
+      var regex = /^Done|^Release|^To Do|^In Progress/;
+      return data.filter(function (item) {
+        if (!regex.test(item.name)) {
+          return item;
+        }
+      });
+    }
+
     current_sprint = getCurrentSprint(result);
-    current_sprint_table = this.create_table('Current Sprint', current_sprint);
+    content.push(this.create_table('Current Sprint', current_sprint));
 
-    past_sprints = getPastSprints(result);
-    past_sprints_table = this.create_table('Past Sprints', past_sprints);
+    done = getDone(result);
+    content.push(this.create_table('Done/Released', done));
 
-    content = current_sprint_table + past_sprints_table;
-    this.create_dialog(content);
+    other = getOther(result);
+    content.push(this.create_table('Other', other));
+
+    this.create_dialog(content.join());
   },
   run: function () {
     var self = this;
